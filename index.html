@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Aurora Surrealis — Black/Death Metal from Freiburg. Dark, intense and atmospheric. 🎵</title>
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-BVNNqW1iD-lC-o3MMKUNr.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+	<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+
+	<style>
+:root{
+	--bg-dark: #0a0a1a;
+	--neon-purple: #9b00e0;
+	--aurora-green: #2ee88f;
+	--text-soft: rgba(210,210,215,0.9);
+}
+
+/* Grundstyles */
+html, body {
+	scroll-behavior: smooth;
+	min-height: 100vh;
+	margin: 0;
+	font-family:"Montserrat",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+	background: linear-gradient(180deg,#030305 0%,var(--bg-dark) 60%);
+	color: var(--text-soft);
+	overflow-x: hidden;
+	overflow-y: visible;
+}
+
+/* Menüleiste oben */
+.menu-bar {
+	position: fixed;
+	top: -60px;
+	transition: top 0.4s ease;
+	left: 0;
+	right: 0;
+	height: 60px;
+	background: rgba(10, 10, 26, 0.85);
+	backdrop-filter: blur(10px);
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 20px;
+	box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+	border-bottom: 1px solid rgba(46, 232, 143, 0.1);
+	overflow: visible;
+}
+
+.menu-bar.active {
+	top: 0;  /* fährt ins Bild */
+}
+
+.menu-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.menu-logo {
+	font-family: "Cinzel", serif;
+	font-size: 1.2rem;
+	color: var(--aurora-green);
+	font-weight: 700;
+	letter-spacing: 1px;
+	position: absolute;
+	left: 20px;
+}
+
+.menu-toggle {
+	position: fixed;      /* fixiert den Button im Viewport */
+	top: 18px;            /* Abstand von oben */
+	right: 20px;          /* Abstand von rechts */
+	width: 32px;
+	height: 26px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	cursor: pointer;
+	z-index: 2000;        /* über allen Menü-Elementen */
+	pointer-events: auto;
+	background: none;     /* kein Hintergrund */
+	border: none;         /* keine Border */
+}
+
+
+.menu-toggle span {
+	display: block;
+	width: 100%;
+	height: 4px;           /* etwas dicker, sichtbar genug */
+	background: var(--aurora-green);
+	border-radius: 2px;
+	transition: all 0.3s ease;
+}
+
+
+
+
+.menu-toggle.active span:nth-child(2) {
+	opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+	transform: rotate(-45deg) translateY(-9px);
+}
+
+/* Menü Links horizontal in der Mitte */
+.menu-links {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction: row;
+	gap: 2rem;
+	align-items: center;
+	opacity: 1;
+	pointer-events: all;
+}
+
+.menu-links a {
+	font-family: "Cinzel", serif;
+	font-size: 1.1rem;
+	color: var(--text-soft);
+	text-decoration: none;
+	position: relative;
+	transition: all 0.3s ease;
+	letter-spacing: 1px;
+	padding: 8px 15px;
+	white-space: nowrap;
+}
+
+.menu-links a:hover {
+	color: var(--aurora-green);
+	text-shadow: 0 0 15px rgba(46, 232, 143, 0.6);
+}
+
+.menu-links a::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 0;
+	height: 2px;
+	background: var(--aurora-green);
+	transition: width 0.3s ease;
+}
+
+.menu-links a:hover::after {
+	width: 80%;
+}
+
+
+/* Aurora Canvas */
+#aurora {
+	position:fixed;
+	inset:0;
+	width:100%;
+	height:100%;
+	z-index:0;
+	pointer-events:none;
+	mix-blend-mode:screen;
+	filter:blur(15px) saturate(150%);
+	opacity:0.95;
+}
+
+/* Green Glow Canvas */
+#green-glow {
+	position: fixed;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	pointer-events: none;
+	mix-blend-mode: screen;
+	opacity: 0.25;
+	filter: blur(90px);
+}
+
+/* Grain Overlay */
+.grain{
+	position:fixed;
+	inset:0;
+	z-index:2;
+	pointer-events:none;
+	background-image:radial-gradient(rgba(255,255,255,0.01) 1px, transparent 1px);
+	background-size:3px 3px;
+	mix-blend-mode:overlay;
+	opacity:0.04;
+}
+
+/* Hero Logo */
+.hero-wrap{
+	position:relative;
+	z-index:4;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:flex-start;
+	padding-top:108px; /* Mehr Platz wegen Menüleiste */
+	pointer-events:none;
+}
+.logo-img {
+	width:800px;
+	max-width:86vw;
+	height:auto;
+	opacity:0.98;
+	filter:drop-shadow(0 18px 40px rgba(0,0,0,0.7));
+	animation:
+		float 6s ease-in-out infinite,
+		pulseGlow 4s ease-in-out infinite;
+	transition: transform 0.3s ease;
+}
+
+@keyframes float{
+	0%{transform:translateY(-6px)}
+	50%{transform:translateY(-14px)}
+	100%{transform:translateY(-6px)}
+}
+.slogan{
+	margin-top:50px;
+    margin-bottom: 100px;
+	color:rgba(220,220,230,0.85);
+	font-family:"Cinzel",serif;
+	font-weight:400;
+	letter-spacing:1px;
+	pointer-events:none;
+	text-align: center;
+}
+.linebreak {
+	display: block;
+}
+
+/* Allgemeine Sektions-Titel (Zurück zu Cinzel) */
+.section-title {
+	font-family: "Cinzel", serif; /* Zurück zu Cinzel, wie gewünscht */
+	font-size: 2.4rem; /* Leicht vergrößert für besseren Eindruck */
+	font-weight: 700; /* Cinzel fett */
+	color: var(--aurora-green);
+	text-align: center;
+	margin-top: 100px; /* Separation von vorherigem Inhalt */
+	margin-bottom: 50px;
+	text-shadow: 0 0 10px rgba(46, 232, 143, 0.8), 0 0 20px rgba(46, 232, 143, 0.3); /* Etwas stärkerer Glow */
+	letter-spacing: 2px; /* Mehr Abstand zwischen Buchstaben für Eleganz */
+	padding-top: 60px; /* Nötig für Anker-Link, um nicht unter der Menüleiste zu verschwinden */
+	margin-top: -60px; /* Offset des Padding */
+}
+
+/* Center grid */
+.stage{
+	position:relative;
+	z-index:3;
+	min-height:100vh;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:flex-start;
+	padding:20px;
+	box-sizing:border-box;
+}
+
+/* Gigs Section Styling */
+.gig-list {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	width: 90%;
+	max-width: 800px;
+	margin: 0 auto 100px auto;
+}
+
+.gig-card {
+	display: flex;
+	align-items: center;
+	background: rgba(255, 255, 255, 0.03);
+	border: 1px solid rgba(46, 232, 143, 0.1);
+	border-radius: 12px;
+	padding: 20px;
+	box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+	transition: all 0.4s ease;
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.gig-card:hover {
+	background: rgba(46, 232, 143, 0.05);
+	box-shadow: 0 0 40px rgba(46, 232, 143, 0.2);
+	transform: translateY(-5px);
+}
+
+.gig-date {
+	font-family: "Cinzel", serif; /* Cinzel für das Datum beibehalten, da es gut aussieht */
+	text-align: center;
+	flex-shrink: 0;
+	width: 100px;
+	margin-right: 25px;
+	padding-right: 25px;
+	border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gig-date .day {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: var(--aurora-green);
+	line-height: 1;
+}
+
+.gig-date .month {
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--text-soft);
+	text-transform: uppercase;
+}
+
+.gig-info {
+	flex-grow: 1;
+}
+
+.gig-info h4 {
+	font-size: 1.4rem;
+	color: #fff;
+	margin: 0 0 5px 0;
+	font-weight: 700;
+}
+
+.gig-info p {
+	font-size: 0.95rem;
+	color: rgba(210, 210, 215, 0.7);
+	margin: 0;
+}
+
+@media (max-width: 600px) {
+	.gig-card {
+		flex-direction: column;
+		text-align: center;
+	}
+	.gig-date {
+		width: auto;
+		margin-right: 0;
+		margin-bottom: 15px;
+		padding-right: 0;
+		border-right: none;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		padding-bottom: 15px;
+	}
+	.gig-info h4 {
+			font-size: 1.2rem;
+	}
+}
+
+/* Band Section (Cards) */
+.cards {
+	margin-top: 28px;
+    margin-bottom: 100px;
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 28px;
+	justify-items: center;
+}
+
+@media (max-width: 1060px) {
+	.cards {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 720px) {
+	.cards {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 480px) {
+	.cards {
+		grid-template-columns: 1fr;
+	}
+}
+
+.card{
+	width: 80vw;
+	max-width: 260px;
+	aspect-ratio: 260 / 160;
+	border-radius:16px;
+	background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+	backdrop-filter:blur(8px) saturate(120%);
+	box-shadow:0 8px 30px rgba(0,0,0,0.6), 0 0 26px rgba(0,0,0,0.18);
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
+	padding:16px;
+	box-sizing:border-box;
+	color:var(--text-soft);
+	text-align:center;
+	cursor:pointer;
+	transition:transform 0.45s cubic-bezier(.2,.9,.25,1),box-shadow 0.45s,background 0.4s;
+	position:relative;
+	overflow:visible;
+}
+
+.card .member-img {
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-bottom: 16px;
+	border: 2px solid rgba(46, 232, 143, 0.5);
+}
+
+.card h4{
+	margin:0;
+	font-family:"Cinzel",serif;
+	font-size:1.05rem;
+	color:#fff;
+	text-shadow:0 0 8px rgba(0,0,0,0.5);
+}
+.card span{
+	display:block;
+	margin-top:6px;
+	font-size:0.88rem;
+	color:rgba(200,240,220,0.9);
+}
+.card:before{
+	content:"";
+	position:absolute;
+	inset:-3px;
+	border-radius:18px;
+	background:linear-gradient(120deg, rgba(59,255,154,0.06), rgba(187,0,255,0.05));
+	z-index:-1;
+	filter:blur(10px);
+	opacity:0;
+	transition:opacity 0.35s;
+}
+.card:hover{
+	transform:translateY(-10px) scale(1.02);
+	box-shadow:0 18px 60px rgba(0,0,0,0.7),0 0 80px rgba(59,255,154,0.08);
+}
+.card:hover:before{
+	opacity:1;
+}
+.card .role{
+	font-size:0.85rem;
+	color:rgba(200,255,230,0.9);
+	letter-spacing:0.6px;
+}
+
+#particles {
+	position: fixed;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 3;
+	pointer-events: none;
+	filter: blur(3px);
+}
+
+/* Social fixed */
+.social-fixed {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-top: 2rem;
+	margin-bottom: 80px;
+}
+
+.social-fixed a {
+	background: rgba(255, 255, 255, 0.03);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	color: rgba(230, 240, 255, 0.8);
+	text-decoration: none;
+	padding: 0.6rem 1.2rem;
+	border-radius: 0.75rem;
+	font-size: 1.05rem;
+	letter-spacing: 0.05em;
+	transition: all 0.4s ease;
+	backdrop-filter: blur(6px);
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+.social-fixed a:hover {
+	color: #fff;
+	border-color: rgba(46, 232, 143, 0.4);
+	background: rgba(255, 255, 255, 0.08);
+	box-shadow:
+		0 0 20px rgba(59, 0, 255, 0.15),
+		0 0 35px rgba(46, 232, 143, 0.1);
+	transform: scale(1.05);
+}
+
+@keyframes pulseGlow {
+	0% {
+		filter: drop-shadow(0 0 7px rgba(0,255,136,0.38))
+			 		drop-shadow(0 0 14px rgba(0,255,136,0.25));
+	}
+	50% {
+		filter: drop-shadow(0 0 16px rgba(0,255,136,0.45))
+			 		drop-shadow(0 0 28px rgba(0,255,136,0.32));
+	}
+	100% {
+		filter: drop-shadow(0 0 7px rgba(0,255,136,0.38))
+			 		drop-shadow(0 0 14px rgba(0,255,136,0.25));
+	}
+}
+
+.logo-img:hover {
+	transform: scale(1.05);
+}
+
+.video-section {
+  margin-top: 40px;
+  margin-bottom: 100px;
+  text-align: center;
+}
+
+.video-section iframe {
+  width: 80vw;
+  max-width: 1280px;
+  height: 720px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 255, 150, 0.3);
+}
+
+.video-container {
+  position: relative;
+  width: 90%;
+  max-width: 800px;
+  margin: 40px auto;
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 0 40px rgba(0, 255, 136, 0.25);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.video-container iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border: none;
+}
+
+/* Burger Button */
+.burger {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 32px;
+  height: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 9999;
+  pointer-events: auto;
+}
+.burger div {
+  width: 100%;
+  height: 4px;
+  background: rgba(46,232,143,0.85);
+  border-radius: 4px;
+  transition: 0.35s ease;
+  box-shadow: 0 0 10px rgba(46,232,143,0.5);
+}
+
+/* Burger X Animation */
+.burger.active div:nth-child(1) { transform: translateY(11px) rotate(45deg); }
+.burger.active div:nth-child(2) { opacity: 0; }
+.burger.active div:nth-child(3) { transform: translateY(-11px) rotate(-45deg); }
+
+/* Smartphones: Logo & Menü anpassen */
+@media (max-width: 768px) {
+
+  /* Logo oben mittig, alles in einer Zeile */
+  .menu-logo {
+    position: fixed;
+    top: 12px; /* genug Abstand, damit es nicht abgeschnitten wird */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.3rem; /* kleiner als Desktop */
+    white-space: nowrap; /* verhindert Zeilenumbruch */
+    text-align: center;
+    z-index: 2000;
+  }
+
+  /* Burger rechts oben */
+  .menu-toggle {
+    top: 12px;
+    right: 20px;
+  }
+
+  /* Menü-Links vertikal darunter, mittig */
+  .menu-links {
+    flex-direction: column;
+    gap: 1.5rem;
+    position: fixed;
+    top: 50px; /* unterhalb des Logos */
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 26, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 20px 0;
+    align-items: center;  /* horizontal zentrieren */
+    justify-content: flex-start;
+    transform: translateY(-100%);
+    transition: transform 0.4s ease;
+    pointer-events: none;
+    z-index: 1500;
+    text-align: center;   /* Links zentrieren */
+  }
+
+  /* Menü beim aktiven Zustand */
+  .menu-bar.active .menu-links {
+    transform: translateY(0);
+    pointer-events: all;
+  }
+
+  .menu-links a {
+    font-size: 1.3rem;
+    padding: 10px 20px;
+    white-space: nowrap; /* verhindert Umbruch */
+  }
+}
+
+	</style>
+</head>
+<body>
+
+<!-- Burger -->
+<div class="burger" id="burgerMenu">
+  <div></div><div></div><div></div>
+</div>
+
+	<!-- Menüleiste (Bereinigt) -->
+	<div class="menu-bar" id="menuBar">
+		<div class="menu-logo">Aurora Surrealis</div>
+		<nav class="menu-links">
+			<a href="#home">Home</a>
+			<a href="#band">Band</a>
+			<a href="#videos">Videos</a>
+			<a href="#gigs">Gigs</a>
+			<a href="#social">Social Media</a>
+		</nav>
+		
+	</div>
+
+	<canvas id="aurora"></canvas>
+	<canvas id="green-glow"></canvas>
+	<canvas id="particles"></canvas>
+
+	<div class="grain"></div>
+
+	<div class="hero-wrap" id="home">
+		<img src="Aktuell.png" alt="Aurora Surrealis Logo" class="logo-img" />
+		<div class="slogan">
+			Black/Death Metal from Freiburg.<span class="linebreak"></span>Dark, intense and atmospheric.
+		</div>
+	</div>
+
+	<main class="stage" role="main">
+		
+		<!-- Band Section -->
+		<section class="band-section">
+			<h3 class="section-title"id="band">The Band</h3> <!-- Titel für die Band-Sektion -->
+			
+			<div class="cards">
+				<div class="card" data-member="Patricia Korpel" data-instagram="https://www.instagram.com/patti_pat_pat93">
+					<img src="patricia.jpg" alt="Patricia Korpel" class="member-img" />
+					<h4>Patricia Korpel</h4>
+					<span class="role">Vocals</span>
+				</div>
+
+				<div class="card" data-member="Ciarán Steger-Hoey" data-instagram="https://www.instagram.com/ciaran_terrawave">
+					<img src="ciaran.jpg" alt="Ciarán Steger-Hoey" class="member-img" />
+					<h4>Ciarán Steger-Hoey</h4>
+					<span class="role">Vocals</span>
+				</div>
+
+				<div class="card" data-member="Florian Lindner" data-instagram="https://www.instagram.com/flowalze">
+					<img src="flo.jpg" alt="Florian Lindner" class="member-img" />
+					<h4>Florian Lindner</h4>
+					<span class="role">Guitar</span>
+				</div>
+
+				<div class="card" data-member="Lukas Kowolik" data-instagram="https://www.instagram.com/lukash_egghead">
+					<img src="lukas.jpg" alt="Lukas Kowolik" class="member-img" />
+					<h4>Lukas Kowolik</h4>
+					<span class="role">Guitar</span>
+				</div>
+
+				<div class="card" data-member="Johannes Frei" data-instagram="https://www.instagram.com/_joo666_">
+					<img src="johannes.jpg" alt="Johannes Frei" class="member-img" />
+					<h4>Johannes Frei</h4>
+					<span class="role">Bass</span>
+				</div>
+
+				<div class="card" data-member="Joachim Hierholzer" data-instagram="https://www.instagram.com/jo_hier512">
+					<img src="joachim.jpg" alt="Joachim Hierholzer" class="member-img" />
+					<h4>Joachim Hierholzer</h4>
+					<span class="role">Drums</span>
+				</div>
+			</div>
+		</section>
+		<!-- Ende Band Section -->
+
+
+		<div class="video-section">
+			<h3 class="section-title" id="videos">Videos</h3> <!-- Titel für die Band-Sektion -->
+    <h2>Fogbound</h2>
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/qEWt_lilDC0?si=LwX6Sa5mBzhwhZ6E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+
+  <div class="video-section">
+    <h2>Siren's Call</h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/Kbez7b4kLoY?si=QOyRLARxHwgXVWuD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+		
+		<!-- Gigs Section -->
+		<section class="gigs-section">
+			<h3 class="section-title"id="gigs">Upcoming Gigs</h3>
+
+			<div class="gig-list">
+
+				<div class="gig-card" onclick="window.open('https://www.wacken.com/en/line-up/bands/#/bandfilter', '_blank')">
+					<div class="gig-date">
+						<div class="day">-</div>
+						<div class="month">TBA</div>
+					</div>
+					<div class="gig-info">
+						<h4>Stay tuned!</h4>
+						<p>More Gigs Coming Soon</p>
+					</div>
+				</div>
+
+				<div class="gig-card" onclick="window.open('https://www.party-san.de/bands-2026', '_blank')">
+					<div class="gig-date">
+						<div class="day">-</div>
+						<div class="month">TBA</div>
+					</div>
+					<div class="gig-info">
+						<h4>Stay tuned!</h4>
+						<p>More Gigs Coming Soon</p>
+					</div>
+				</div>
+
+				<div class="gig-card" onclick="window.open('https://www.summer-breeze.de/de/bands', '_blank')">
+					<div class="gig-date">
+						<div class="day">-</div>
+						<div class="month">TBA</div>
+					</div>
+					<div class="gig-info">
+						<h4>Stay tuned!</h4>
+						<p>More Gigs Coming Soon</p>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Ende Gigs Section -->
+
+
+		<section id="social" class="social-section">
+  <h3 class="section-title">Follow Us</h3>
+
+  <div class="social-fixed">
+    <a href="https://app.backstagepro.de/aurora-surrealis" target="_blank">BackstagePro</a>
+    <a href="https://aurorasurrealis.bandcamp.com/track/fogbound" target="_blank">Bandcamp</a>
+    <a href="https://soundcloud.com/aurora-surrealis-59396302" target="_blank">SoundCloud</a>
+    <a href="https://www.instagram.com/aurorasurrealisband" target="_blank">Instagram</a>
+    <a href="https://www.youtube.com/@AuroraSurrealis-pd2md" target="_blank">YouTube</a>
+    <a href="https://linktr.ee/aurorasurrealisband" target="_blank">Linktree</a>
+  </div>
+</section>
+
+
+	</main>
+
+<script>
+// Sidebar & Burger
+
+const burger = document.getElementById('burgerMenu');
+const menuBar = document.getElementById('menuBar');
+
+burger.addEventListener('click', () => {
+	burger.classList.toggle('active');   // für das X-Icon
+	menuBar.classList.toggle('active');  // Menü fährt raus/weg
+});
+
+// Smooth Scroll + Sidebar schließen
+document.querySelectorAll('.sidebar a').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if(target) target.scrollIntoView({ behavior: 'smooth' });
+    sidebar.classList.remove('active');
+    burger.classList.remove('active');
+  });
+});
+
+	// Band Card Instagram Click
+	document.querySelectorAll('.card').forEach(card => {
+		card.addEventListener('click', () => {
+			const instaUrl = card.getAttribute('data-instagram');
+			if(instaUrl) {
+				window.open(instaUrl, '_blank');
+			}
+		});
+	});
+</script>
+
+<script>
+// Aurora Canvas Animation
+(function () {
+	const canvas = document.getElementById("aurora");
+	const ctx = canvas.getContext("2d");
+
+	let w = (canvas.width = window.innerWidth);
+	let h = (canvas.height = window.innerHeight);
+
+	const layers = [
+		{ color: "rgba(46,232,143,0.25)", intensity: 0.8, speed: 0.0015 },
+		{ color: "rgba(59,0,255,0.15)", intensity: 0.65, speed: 0.0010 },
+		{ color: "rgba(255,50,200,0.12)", intensity: 0.6, speed: 0.0007 }
+	];
+
+	function noise(x, y, t) {
+		return (
+			Math.sin(x * 0.002 + t * 0.5) +
+			Math.cos(y * 0.003 + t * 0.2) +
+			Math.sin((x + y) * 0.001 + t * 0.3)
+		) * 0.5;
+	}
+
+	let t = 0;
+
+	function drawAurora() {
+		ctx.clearRect(0, 0, w, h);
+
+		layers.forEach((layer, index) => {
+			ctx.beginPath();
+
+			const gradient = ctx.createLinearGradient(0, h * 0.1, 0, h * 0.7);
+			gradient.addColorStop(0, layer.color);
+			gradient.addColorStop(1, "rgba(0,0,0,0)");
+			ctx.fillStyle = gradient;
+
+			ctx.moveTo(0, h);
+
+			for (let x = 0; x <= w; x += 8) {
+				const n =
+					noise(x, h * 0.3, t + index * 10) * 120 +
+					noise(x * 0.2, h * 0.1, t + index * 5) * 80;
+
+				const y = h * 0.35 - n * layer.intensity;
+
+				ctx.lineTo(x, y);
+			}
+
+			ctx.lineTo(w, h);
+			ctx.closePath();
+			ctx.fill();
+		});
+
+		t += 0.002;
+
+		requestAnimationFrame(drawAurora);
+	}
+
+	drawAurora();
+
+	window.addEventListener("resize", () => {
+		w = canvas.width = window.innerWidth;
+		h = canvas.height = window.innerHeight;
+	});
+})();
+
+// Green Glow Canvas Animation
+(function(){
+	const canvas = document.getElementById('green-glow');
+	const ctx = canvas.getContext('2d');
+	
+	let w = canvas.width = window.innerWidth;
+	let h = canvas.height = window.innerHeight;
+	ctx.setTransform(1,0,0,1,0,0);
+
+	let offset = 0;
+
+	function drawGlow(){
+		ctx.clearRect(0,0,w,h);
+		offset += 0.02;
+
+		const layers = [
+			{xAmp:120, yAmp:80, opacity:0.35, phase:0, noiseFactor:1.2},
+			{xAmp:90, yAmp:60, opacity:0.25, phase:100, noiseFactor:1.0},
+			{xAmp:110, yAmp:70, opacity:0.15, phase:50, noiseFactor:0.8}
+		];
+
+		layers.forEach(layer => {
+			const xRandom = (Math.random()-0.5) * layer.noiseFactor * 20;
+			const yRandom = (Math.random()-0.5) * layer.noiseFactor * 15;
+
+			const grd = ctx.createRadialGradient(
+				w/2 + Math.sin(offset + layer.phase)*layer.xAmp + xRandom,
+				h/2 + Math.cos(offset + layer.phase)*layer.yAmp + yRandom,
+				0,
+				w/2 + Math.sin(offset + layer.phase)*layer.xAmp + xRandom,
+				h/2 + Math.cos(offset + layer.phase)*layer.yAmp + yRandom,
+				1200
+			);
+			grd.addColorStop(0, `rgba(46,232,143,${layer.opacity})`);
+			grd.addColorStop(0.5, `rgba(46,232,143,${layer.opacity/2})`);
+			grd.addColorStop(1,'rgba(46,232,143,0)');
+			ctx.fillStyle = grd;
+			ctx.fillRect(0,0,w,h);
+		});
+
+		requestAnimationFrame(drawGlow);
+	}
+	drawGlow();
+
+	window.addEventListener('resize', ()=>{
+		w = canvas.width = window.innerWidth;
+		h = canvas.height = window.innerHeight;
+		ctx.setTransform(1,0,0,1,0,0);
+	});
+})();
+
+// Particles Animation
+(function(){
+	const canvas = document.getElementById('particles');
+	const ctx = canvas.getContext('2d');
+	let w = canvas.width = window.innerWidth;
+	let h = canvas.height = window.innerHeight;
+
+	class Firefly {
+		constructor() {
+			this.reset();
+		}
+		reset() {
+			this.x = Math.random() * w;
+			this.y = Math.random() * h;
+			this.size = Math.random() * 2 + 2;
+			this.speed = Math.random() * 0.3 + 0.05;
+			this.alpha = Math.random() * 0.5 + 0.4;
+			this.angle = Math.random() * Math.PI * 2;
+			this.angularSpeed = (Math.random()-0.5) * 0.01;
+			this.color = `rgba(46,232,143,${this.alpha})`;
+		}
+		update() {
+			this.angle += this.angularSpeed;
+			this.x += Math.cos(this.angle) * this.speed;
+			this.y += Math.sin(this.angle) * this.speed;
+
+			if(this.x > w) this.x = 0;
+			if(this.x < 0) this.x = w;
+			if(this.y > h) this.y = 0;
+			if(this.y < 0) this.y = h;
+		}
+		draw() {
+			ctx.fillStyle = this.color;
+			ctx.beginPath();
+			ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+			ctx.fill();
+		}
+	}
+
+	const fireflies = Array.from({length: 80}, () => new Firefly());
+
+	function animate() {
+		ctx.clearRect(0,0,w,h);
+		fireflies.forEach(f => {
+			f.update();
+			f.draw();
+		});
+		requestAnimationFrame(animate);
+	}
+	animate();
+
+	window.addEventListener('resize', ()=>{
+		w = canvas.width = window.innerWidth;
+		h = canvas.height = window.innerHeight;
+	});
+})();
+</script>
+
+</body>
+</html>

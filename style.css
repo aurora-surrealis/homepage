@@ -1,0 +1,124 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: #0b0b0f;
+  color: white;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.aurora-bg {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 30%, #4affc1, transparent 60%),
+              radial-gradient(circle at 80% 70%, #a65aff, transparent 60%),
+              radial-gradient(circle at 50% 90%, #00ffaa, transparent 70%);
+  background-blend-mode: screen;
+  filter: blur(80px) brightness(1.2);
+  animation: auroraMove 20s ease-in-out infinite alternate;
+  z-index: -2;
+}
+
+@keyframes auroraMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-10%, -5%) scale(1.1); }
+}
+
+header {
+  text-align: center;
+  padding: 80px 20px 40px;
+  color: #eaeaea;
+}
+
+header h1 {
+  font-size: 3rem;
+  color: #d6b5ff;
+  text-shadow: 0 0 20px #b46aff;
+}
+
+header p {
+  color: #9fffe2;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+
+.members {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+}
+
+.card {
+  width: 220px;
+  height: 180px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(166,90,255,0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle, rgba(100,255,200,0.3) 10%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.card h3 {
+  color: #e8cfff;
+  font-size: 1.2rem;
+  text-shadow: 0 0 10px #a65aff;
+}
+
+.card p {
+  color: #9fffe2;
+  margin-top: 6px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px 0;
+}
+
+footer a {
+  margin: 0 10px;
+  display: inline-block;
+}
+
+footer img {
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 0 5px #a65aff);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+footer img:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 15px #9fffe2);
+}
