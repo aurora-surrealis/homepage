@@ -11,17 +11,7 @@
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
-	
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-V6CQ1V7FF3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-V6CQ1V7FF3');
-</script>
-	
+		
 	<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
 
 	<style>
@@ -645,6 +635,45 @@ html, body {
 	</style>
 </head>
 <body>
+
+  <!-- Cookie-Banner -->
+  <div id="consent-banner" style="position:fixed;bottom:0;width:100%;background:#222;color:#fff;padding:15px;text-align:center;display:none;z-index:9999;">
+    Diese Website verwendet Cookies, um Analytics und Funktionen bereitzustellen.
+    <button id="accept-cookies" style="margin-left:10px;padding:5px 10px;">Akzeptieren</button>
+  </div>
+
+  <script>
+    // Prüfen, ob der Nutzer schon zugestimmt hat
+    if(!localStorage.getItem('cookiesAccepted')) {
+      document.getElementById('consent-banner').style.display = 'block';
+    }
+
+    // Klick auf "Akzeptieren"
+    document.getElementById('accept-cookies').onclick = function() {
+      localStorage.setItem('cookiesAccepted', 'true');
+      document.getElementById('consent-banner').style.display = 'none';
+      loadAnalytics(); // GA nur nach Zustimmung laden
+    }
+
+    function loadAnalytics() {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-V6CQ1V7FF3';
+      document.head.appendChild(script);
+
+      script.onload = function() {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-V6CQ1V7FF3');
+      }
+    }
+
+    // Wenn schon zugestimmt, direkt GA laden
+    if(localStorage.getItem('cookiesAccepted')) {
+      loadAnalytics();
+    }
+  </script>
 
 <!-- Burger -->
 <div class="burger" id="burgerMenu">
