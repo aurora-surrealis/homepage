@@ -636,54 +636,48 @@ html, body {
 </head>
 <body>
 
-<!-- Cookie-Banner -->
-<div id="consent-banner" style="position:fixed;bottom:0;width:100%;background:#222;color:#fff;padding:15px;text-align:center;display:none;z-index:9999;">
-  Diese Website verwendet Cookies, um Analytics und Funktionen bereitzustellen.
-  <button id="accept-cookies" style="margin-left:10px;padding:5px 10px;">Akzeptieren</button>
+<!-- Consent-Banner -->
+<div id="consent-banner" style="position:fixed;bottom:0;left:0;width:100%;background:#222;color:#fff;padding:15px;text-align:center;z-index:1000;">
+  Wir verwenden Cookies für Analyse und Personalisierung.  
+  <button id="accept-btn" style="margin:0 10px;padding:5px 10px;">Akzeptieren</button>
+  <button id="deny-btn" style="margin:0 10px;padding:5px 10px;">Ablehnen</button>
 </div>
 
 <script>
-  // Initialer Consent-Status: alles verweigern
+  // Google Consent Mode initialisieren
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  
   gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
     'analytics_storage': 'denied'
   });
 
-  // Banner nur zeigen, wenn noch nicht zugestimmt
-  if(!localStorage.getItem('cookiesAccepted')) {
-    document.getElementById('consent-banner').style.display = 'block';
-  } else {
-    loadAnalytics(); // wenn schon zugestimmt, direkt laden
-  }
-
-  // Klick auf "Akzeptieren"
-  document.getElementById('accept-cookies').onclick = function() {
-    localStorage.setItem('cookiesAccepted', 'true');
-    document.getElementById('consent-banner').style.display = 'none';
-    
-    // Consent auf granted setzen
+  // Banner Buttons
+  const banner = document.getElementById('consent-banner');
+  document.getElementById('accept-btn').onclick = function() {
     gtag('consent', 'update', {
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted',
       'analytics_storage': 'granted'
     });
+    banner.style.display = 'none';
+  };
 
-    // GA Script laden
-    loadAnalytics();
-  }
-
-  function loadAnalytics() {
-    // GA Script dynamisch einfügen
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-V6CQ1V7FF3';
-    document.head.appendChild(script);
-
-    script.onload = function() {
-      gtag('js', new Date());
-      gtag('config', 'G-V6CQ1V7FF3');
-    }
-  }
+  document.getElementById('deny-btn').onclick = function() {
+    gtag('consent', 'update', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied'
+    });
+    banner.style.display = 'none';
+  };
 </script>
+
 
 <!-- Burger -->
 <div class="burger" id="burgerMenu">
