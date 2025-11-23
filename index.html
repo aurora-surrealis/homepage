@@ -1,5 +1,46 @@
 <!DOCTYPE html>
 <html lang="de">
+
+<!-- ===============================
+     Google GA4 + Consent Mode Setup
+     =============================== -->
+
+<!-- 1. dataLayer & gtag definieren -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+</script>
+
+<!-- 2. GA4 gtag.js laden -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-V6CQ1V7FF3"></script>
+
+<!-- 3. Standard Consent auf denied setzen + wait_for_update -->
+<script>
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+
+  // GA4 initialisieren (erst nach dem Consent Default)
+  gtag('js', new Date());
+  gtag('config', 'G-V6CQ1V7FF3');
+</script>
+
+<!-- 4. Update-Funktion für Banner -->
+<script>
+  function allConsentGranted() {
+    gtag('consent', 'update', {
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted',
+      'analytics_storage': 'granted'
+    });
+  }
+</script>
+
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -636,48 +677,86 @@ html, body {
 </head>
 <body>
 
-<!-- Consent-Banner -->
-<div id="consent-banner" style="position:fixed;bottom:0;left:0;width:100%;background:#222;color:#fff;padding:15px;text-align:center;z-index:1000;">
-  Wir verwenden Cookies für Analyse und Personalisierung.  
-  <button id="accept-btn" style="margin:0 10px;padding:5px 10px;">Akzeptieren</button>
-  <button id="deny-btn" style="margin:0 10px;padding:5px 10px;">Ablehnen</button>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-V6CQ1V7FF3"></script>
+<script>
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-V6CQ1V7FF3');
+</script>
+	
+<div id="consentBanner" style="
+position: fixed;
+bottom: 20px;
+left: 20px;
+right: 20px;
+padding: 20px;
+background: #222;
+color: white;
+z-index: 99999;
+border-radius: 8px;
+max-width: 300px;
+margin: auto;
+">
+  <p>Diese Website verwendet Cookies für Analytics.</p>
+  <button id="acceptBtn">OK</button>
+  <button id="declineBtn">Ablehnen</button>
 </div>
 
 <script>
-  // Google Consent Mode initialisieren
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  
-  gtag('consent', 'default', {
+// Prüfen, ob Nutzer schon eine Entscheidung getroffen hat
+let savedConsent = localStorage.getItem('consentMode');
+
+if(savedConsent === 'granted') {
+  gtag('consent', 'update', {
+    'ad_storage': 'granted',
+    'ad_user_data': 'granted',
+    'ad_personalization': 'granted',
+    'analytics_storage': 'granted'
+  });
+  document.getElementById('consentBanner').style.display = 'none';
+} else if(savedConsent === 'denied') {
+  gtag('consent', 'update', {
     'ad_storage': 'denied',
     'ad_user_data': 'denied',
     'ad_personalization': 'denied',
     'analytics_storage': 'denied'
   });
+  document.getElementById('consentBanner').style.display = 'none';
+}
 
-  // Banner Buttons
-  const banner = document.getElementById('consent-banner');
-  document.getElementById('accept-btn').onclick = function() {
-    gtag('consent', 'update', {
-      'ad_storage': 'granted',
-      'ad_user_data': 'granted',
-      'ad_personalization': 'granted',
-      'analytics_storage': 'granted'
-    });
-    banner.style.display = 'none';
-  };
+// Wenn Nutzer klickt
+document.getElementById('acceptBtn').onclick = function() {
+  gtag('consent', 'update', {
+    'ad_storage': 'granted',
+    'ad_user_data': 'granted',
+    'ad_personalization': 'granted',
+    'analytics_storage': 'granted'
+  });
+  localStorage.setItem('consentMode', 'granted'); // speichert Entscheidung
+  document.getElementById('consentBanner').style.display = 'none';
+};
 
-  document.getElementById('deny-btn').onclick = function() {
-    gtag('consent', 'update', {
-      'ad_storage': 'denied',
-      'ad_user_data': 'denied',
-      'ad_personalization': 'denied',
-      'analytics_storage': 'denied'
-    });
-    banner.style.display = 'none';
-  };
+document.getElementById('declineBtn').onclick = function() {
+  gtag('consent', 'update', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  localStorage.setItem('consentMode', 'denied'); // speichert Entscheidung
+  document.getElementById('consentBanner').style.display = 'none';
+};
 </script>
-
 
 <!-- Burger -->
 <div class="burger" id="burgerMenu">
