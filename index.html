@@ -522,93 +522,148 @@ html, body {
 
 /* Mobile Responsive */
 @media (max-width: 1060px) {
-	.cards {
-		grid-template-columns: repeat(3, 1fr);
-	}
+    .cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
+/* Social Buttons – mittlere Screens */
+@media (max-width: 900px) {
+    .social-fixed a {
+        width: 62px;
+        height: 62px;
+    }
+    .social-fixed a img {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* Social Buttons – größere Smartphones */
 @media (max-width: 768px) {
-  .menu-logo {
-    position: fixed;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.3rem;
-    white-space: nowrap;
-    text-align: center;
-    z-index: 2000;
-  }
+    .menu-logo {
+        position: fixed;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.3rem;
+        white-space: nowrap;
+        text-align: center;
+        z-index: 2000;
+    }
 
-  .burger {
-    top: 12px;
-    right: 20px;
-  }
+    .burger {
+        top: 12px;
+        right: 20px;
+    }
 
-  .menu-links {
-    flex-direction: column;
-    gap: 1.5rem;
-    position: fixed;
-    top: 50px;
-    left: 0;
-    right: 0;
-    background: rgba(10, 10, 26, 0.95);
-    backdrop-filter: blur(12px);
-    padding: 20px 0;
-    align-items: center;
-    justify-content: flex-start;
-    transform: translateY(-100%);
-    transition: transform 0.4s ease;
-    pointer-events: none;
-    z-index: 1500;
-    text-align: center;
-  }
+    .menu-links {
+        flex-direction: column;
+        gap: 1.5rem;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 26, 0.95);
+        backdrop-filter: blur(12px);
+        padding: 20px 0;
+        align-items: center;
+        justify-content: flex-start;
+        transform: translateY(-100%);
+        transition: transform 0.4s ease;
+        pointer-events: none;
+        z-index: 1500;
+        text-align: center;
+    }
 
-  .menu-bar.active .menu-links {
-    transform: translateY(0);
-    pointer-events: all;
-  }
+    .menu-bar.active .menu-links {
+        transform: translateY(0);
+        pointer-events: all;
+    }
 
-  .menu-links a {
-    font-size: 1.3rem;
-    padding: 10px 20px;
-    white-space: nowrap;
-  }
+    .menu-links a {
+        font-size: 1.3rem;
+        padding: 10px 20px;
+        white-space: nowrap;
+    }
 
-  .video-section iframe {
-    height: 45vh;
-  }
+    .video-section iframe {
+        height: 45vh;
+    }
+
+    /* Social Buttons – Pre-Smartphone */
+    .social-fixed {
+        gap: 0.8rem;
+    }
+    .social-fixed a {
+        width: 54px;
+        height: 54px;
+    }
+    .social-fixed a img {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* Social Buttons – kleine Smartphones */
+@media (max-width: 600px) {
+    .gig-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .gig-date {
+        width: auto;
+        margin-right: 0;
+        margin-bottom: 15px;
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 15px;
+    }
+    .gig-info h4 {
+        font-size: 1.2rem;
+    }
+
+    .social-fixed {
+        gap: 0.7rem;
+    }
+    .social-fixed a {
+        width: 48px;
+        height: 48px;
+    }
+    .social-fixed a img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Social Buttons – extra kleine Geräte */
+@media (max-width: 420px) {
+    .social-fixed {
+        gap: 0.55rem;
+    }
+    .social-fixed a {
+        width: 42px;
+        height: 42px;
+    }
+    .social-fixed a img {
+        width: 22px;
+        height: 22px;
+    }
 }
 
 @media (max-width: 720px) {
-	.cards {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (max-width: 600px) {
-	.gig-card {
-		flex-direction: column;
-		text-align: center;
-	}
-	.gig-date {
-		width: auto;
-		margin-right: 0;
-		margin-bottom: 15px;
-		padding-right: 0;
-		border-right: none;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-		padding-bottom: 15px;
-	}
-	.gig-info h4 {
-		font-size: 1.2rem;
-	}
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 480px) {
-	.cards {
-		grid-template-columns: 1fr;
-	}
+    .cards {
+        grid-template-columns: 1fr;
+    }
 }
+
 	</style>
 </head>
 <body>
